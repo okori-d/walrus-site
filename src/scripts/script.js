@@ -1,31 +1,32 @@
-// Add smooth hover effect to cards
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-2px)';
-    });
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0)';
-    });
-});
-
-// Add scroll reveal animation
 document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.project-card');
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
+    // Initialize collapsible sections
+    const collapsibles = document.querySelectorAll('.collapsible-header');
+    
+    // Function to toggle section
+    const toggleSection = (header) => {
+        const content = header.nextElementSibling;
+        const isExpanded = header.classList.contains('active');
+        
+        // Toggle active state
+        header.classList.toggle('active');
+        
+        // Animate content height
+        if (isExpanded) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    };
 
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        observer.observe(card);
+    // Add click handlers
+    collapsibles.forEach(header => {
+        // Initially collapse all sections
+        const content = header.nextElementSibling;
+        content.style.maxHeight = null;
+        
+        // Add click handler
+        header.addEventListener('click', () => {
+            toggleSection(header);
+        });
     });
 });
